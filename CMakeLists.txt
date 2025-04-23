@@ -5,7 +5,7 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 
 #################################################################
-option(USE_MYMATH "Use provided math implementation" OFF)
+option(USE_CHECK "Use check implementation" OFF)
 
 # configure a header file to pass some of the CMake settings
 # to the source code
@@ -47,18 +47,23 @@ add_subdirectory(vendors/oatpp-1.3.0)
 add_library(oatpp::oatpp ALIAS oatpp)
 set(OATPP_BUILD_TESTS OFF CACHE BOOL "" FORCE)
 set(OATPP_INSTALL OFF CACHE BOOL "" FORCE)
+set(OATPP_LINK_TEST_LIBRARY OFF CACHE BOOL "" FORCE)
+set_target_properties(oatpp PROPERTIES FOLDER "vendors")
 
 # add oatpp-swagger lib
 add_subdirectory(vendors/oatpp-swagger-1.3.0)
 add_library(oatpp::oatpp-swagger ALIAS oatpp-swagger)
+set_target_properties(oatpp-swagger PROPERTIES FOLDER "vendors")
 
 # add oatpp-sqlite lib
 add_subdirectory(vendors/sqlite3)
+set_target_properties(sqlite3 PROPERTIES FOLDER "vendors")
 if (NOT TARGET SQLite::SQLite3)
     add_library(SQLite::SQLite3 ALIAS sqlite)
 endif()
 add_subdirectory(vendors/oatpp-sqlite-1.3.0)
 add_library(oatpp::oatpp-sqlite ALIAS oatpp-sqlite)
+set_target_properties(oatpp-sqlite PROPERTIES FOLDER "vendors")
 
 #################################################################
 # add libressl 4.0.0
@@ -92,6 +97,7 @@ endif()
 # add oatpp-libressl lib
 add_subdirectory(vendors/oatpp-libressl-1.3.0)
 add_library(oatpp::oatpp-libressl ALIAS oatpp-libressl)
+set_target_properties(oatpp-libressl PROPERTIES FOLDER "vendors")
 
 target_link_libraries(${PROJECT_LIB}
     PUBLIC oatpp::oatpp
