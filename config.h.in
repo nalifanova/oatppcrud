@@ -1,0 +1,5 @@
+// the configured options and settings for OatCrud
+#define OatCrud_VERSION_MAJOR @OatCrud_VERSION_MAJOR@
+#define OatCrud_VERSION_MINOR @OatCrud_VERSION_MINOR@
+
+#cmakedefine USE_MYMATH
