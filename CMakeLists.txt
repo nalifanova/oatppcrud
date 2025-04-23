@@ -22,6 +22,7 @@ set(SOURCE_FILES
     src/controller/UserController.hpp
 
     src/db/UserDb.hpp
+    src/dto/HelloDto.hpp
     src/dto/StatusDto.hpp
     src/dto/UserDto.hpp
 

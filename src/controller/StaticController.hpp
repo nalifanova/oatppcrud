@@ -1,7 +1,8 @@
-
 #ifndef CRUD_STATICCONTROLLER_HPP
 #define CRUD_STATICCONTROLLER_HPP
-
+// cust
+#include "dto/HelloDto.hpp"
+// lib
 #include "oatpp/web/server/api/ApiController.hpp"
 #include "oatpp/parser/json/mapping/ObjectMapper.hpp"
 #include "oatpp/core/macro/codegen.hpp"
@@ -43,6 +44,16 @@ public:
         response->putHeader(Header::CONTENT_TYPE, "text/html");
         return response;
     }
+
+    ENDPOINT("GET", "/hello", hello,
+         REQUEST(std::shared_ptr<IncomingRequest>, request))
+    {
+        auto dto = HelloDto::createShared();
+        dto->message = "Hello!";
+        dto->server = Header::Value::SERVER;
+        dto->userAgent = request->getHeader(Header::USER_AGENT);
+        return createDtoResponse(Status::CODE_200, dto);
+    };
 
 };
 
