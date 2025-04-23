@@ -1,0 +1,4 @@
+https://sqlite.org/download.html
+C source code as an amalgamation, version 3.49.1.
+
+https://sqlite.org/2025/sqlite-amalgamation-3490100.zip

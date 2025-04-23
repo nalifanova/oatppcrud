@@ -69,7 +69,11 @@ cmake .. \
 
 make -j && make install
 
-## For Win << todo
+## For Win
+# no need to build, just use libress_v4.0.0_windows_x64
+include_directories(${CMAKE_SOURCE_DIR}/vendors/libressl_v4.0.0_windows_x64/include)
+set(LibreSSL_DIR "${CMAKE_SOURCE_DIR}/vendors/libressl_v4.0.0_windows_x64/lib")
+find_package(LibreSSL REQUIRED)
 ```
 
 #### Build and run
