@@ -2,4 +2,4 @@
 #define OatCrud_VERSION_MAJOR @OatCrud_VERSION_MAJOR@
 #define OatCrud_VERSION_MINOR @OatCrud_VERSION_MINOR@
 
-#cmakedefine USE_MYMATH
+#cmakedefine USE_CHECK
