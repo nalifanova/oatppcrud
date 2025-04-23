@@ -47,35 +47,46 @@ add_subdirectory(vendors/oatpp-1.3.0)
 add_library(oatpp::oatpp ALIAS oatpp)
 set(OATPP_BUILD_TESTS OFF CACHE BOOL "" FORCE)
 set(OATPP_INSTALL OFF CACHE BOOL "" FORCE)
+
 # add oatpp-swagger lib
 add_subdirectory(vendors/oatpp-swagger-1.3.0)
 add_library(oatpp::oatpp-swagger ALIAS oatpp-swagger)
+
 # add oatpp-sqlite lib
+add_subdirectory(vendors/sqlite3)
+if (NOT TARGET SQLite::SQLite3)
+    add_library(SQLite::SQLite3 ALIAS sqlite)
+endif()
 add_subdirectory(vendors/oatpp-sqlite-1.3.0)
 add_library(oatpp::oatpp-sqlite ALIAS oatpp-sqlite)
 
 #################################################################
 # add libressl 4.0.0
-# include(FindPkgConfig) # <-- include pkg-config needed by FindLibreSSL.cmake script
-#list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}/cmake") # <-- use FindLibreSSL.cmake in /cmake folder
-include_directories(${CMAKE_SOURCE_DIR}/vendors/libressl-install/include)
-message("libres_include=" "${CMAKE_SOURCE_DIR}/vendors/libressl-install/include")
+if(WIN32)
+    include_directories(${CMAKE_SOURCE_DIR}/vendors/libressl_v4.0.0_windows_x64/include)
+    message("libres_include=" ${CMAKE_SOURCE_DIR}/vendors/libressl_v4.0.0_windows_x64/include)
+    set(LibreSSL_DIR "${CMAKE_SOURCE_DIR}/vendors/libressl_v4.0.0_windows_x64/lib")
+    find_package(LibreSSL REQUIRED)
+else()
+    include_directories(${CMAKE_SOURCE_DIR}/vendors/libressl-install/include)
+    message("libres_include=" "${CMAKE_SOURCE_DIR}/vendors/libressl-install/include")
 
-add_library(LibreSSL::TLS STATIC IMPORTED)
-set_target_properties(LibreSSL::TLS PROPERTIES
-    IMPORTED_LOCATION "${CMAKE_SOURCE_DIR}/vendors/libressl-install/lib/libtls.a"
-    INTERFACE_INCLUDE_DIRECTORIES "${CMAKE_SOURCE_DIR}/vendors/libressl-install/include"
-)
-add_library(LibreSSL::SSL STATIC IMPORTED)
-set_target_properties(LibreSSL::SSL PROPERTIES
-    IMPORTED_LOCATION "${CMAKE_SOURCE_DIR}/vendors/libressl-install/lib/libssl.a"
-    INTERFACE_INCLUDE_DIRECTORIES "${CMAKE_SOURCE_DIR}/vendors/libressl-install/include"
-)
-add_library(LibreSSL::Crypto STATIC IMPORTED)
-set_target_properties(LibreSSL::Crypto PROPERTIES
-    IMPORTED_LOCATION "${CMAKE_SOURCE_DIR}/vendors/libressl-install/lib/libcrypto.a"
-    INTERFACE_INCLUDE_DIRECTORIES "${CMAKE_SOURCE_DIR}/vendors/libressl-install/include"
-)
+    add_library(LibreSSL::TLS STATIC IMPORTED)
+    set_target_properties(LibreSSL::TLS PROPERTIES
+        IMPORTED_LOCATION "${CMAKE_SOURCE_DIR}/vendors/libressl-install/lib/libtls.a"
+        INTERFACE_INCLUDE_DIRECTORIES "${CMAKE_SOURCE_DIR}/vendors/libressl-install/include"
+    )
+    add_library(LibreSSL::SSL STATIC IMPORTED)
+    set_target_properties(LibreSSL::SSL PROPERTIES
+        IMPORTED_LOCATION "${CMAKE_SOURCE_DIR}/vendors/libressl-install/lib/libssl.a"
+        INTERFACE_INCLUDE_DIRECTORIES "${CMAKE_SOURCE_DIR}/vendors/libressl-install/include"
+    )
+    add_library(LibreSSL::Crypto STATIC IMPORTED)
+    set_target_properties(LibreSSL::Crypto PROPERTIES
+        IMPORTED_LOCATION "${CMAKE_SOURCE_DIR}/vendors/libressl-install/lib/libcrypto.a"
+        INTERFACE_INCLUDE_DIRECTORIES "${CMAKE_SOURCE_DIR}/vendors/libressl-install/include"
+    )
+endif()
 
 #################################################################
 # add oatpp-libressl lib
